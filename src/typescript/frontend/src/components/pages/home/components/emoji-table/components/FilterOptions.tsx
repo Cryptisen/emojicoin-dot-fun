@@ -1,11 +1,10 @@
 import { DropdownMenu, SingleSelect } from "components/selects";
 import type { Option } from "components/selects/types";
-import { Switcher } from "components/switcher";
 import Text from "components/text";
 import { useUserSettings } from "context/event-store-context";
 import { translationFunction } from "context/language-context";
-import { useMatchBreakpoints } from "hooks";
 
+import { Switch } from "@/components/ui/Switch";
 import { FlexGap } from "@/containers";
 import { SortMarketsBy } from "@/sdk/indexer-v2/types/common";
 
@@ -37,7 +36,6 @@ type FilterOptionsComponentProps = {
 const FilterOptionsComponent = ({ filter, onChange }: FilterOptionsComponentProps) => {
   const selectedOption = options.find((x) => x.value === filter)!;
   const { t } = translationFunction();
-  const { isLaptopL } = useMatchBreakpoints();
   const animate = useUserSettings((s) => s.animate);
   const toggleAnimate = useUserSettings((s) => s.toggleAnimate);
 
@@ -45,9 +43,7 @@ const FilterOptionsComponent = ({ filter, onChange }: FilterOptionsComponentProp
     <StyledTHFilters>
       <SingleSelect
         wrapperProps={{
-          width: isLaptopL ? "300px" : "unset",
-          marginRight: isLaptopL ? "inherit" : "20px",
-          className: "med-pixel-text",
+          className: "med-pixel-text xl:w-[300px] xs:w-unset xl:mr-inherit xs:mr-[20px]",
         }}
         title={selectedOption?.title}
         value={selectedOption}
@@ -67,12 +63,12 @@ const FilterOptionsComponent = ({ filter, onChange }: FilterOptionsComponentProp
         placeholder="Sort:"
       />
 
-      <FlexGap gap="12px" className={"med-pixel-text"}>
+      <FlexGap gap="12px" className={"items-center med-pixel-text"}>
         <Text className={"med-pixel-text"} color="lightGray" textTransform="uppercase">
           {t("Animate:")}
         </Text>
 
-        <Switcher checked={animate} onChange={toggleAnimate} scale={isLaptopL ? "md" : "sm"} />
+        <Switch checked={animate} onCheckedChange={toggleAnimate} />
       </FlexGap>
     </StyledTHFilters>
   );

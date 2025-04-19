@@ -12,7 +12,6 @@ import {
 } from "components/pages/pools/styled";
 import { useEmojiPicker } from "context/emoji-picker-context";
 import { useAptos } from "context/wallet-context/AptosContextProvider";
-import { useMatchBreakpoints } from "hooks";
 import { MARKETS_PER_PAGE } from "lib/queries/sorting/const";
 import type { SortByPageQueryParams } from "lib/queries/sorting/types";
 import { useSearchParams } from "next/navigation";
@@ -77,8 +76,6 @@ const ClientPoolsPage = ({ initialData }: { initialData: PoolsData[] }) => {
       });
   }, [page, orderBy, sortBy, account, pools, realEmojis]);
 
-  const { isMobile } = useMatchBreakpoints();
-
   return (
     <StyledPoolsPage>
       <StyledHeader>
@@ -90,7 +87,7 @@ const ClientPoolsPage = ({ initialData }: { initialData: PoolsData[] }) => {
             alignItems="center"
             gap="13px"
           >
-            {!isMobile ? <SearchBar /> : null}
+            <SearchBar className="xs:hidden md:flex" />
 
             <TableHeaderSwitcher
               title1="Pools"
@@ -106,13 +103,11 @@ const ClientPoolsPage = ({ initialData }: { initialData: PoolsData[] }) => {
           </FlexGap>
         </StyledHeaderInner>
       </StyledHeader>
-      {isMobile ? (
-        <StyledSubHeader>
-          <StyledHeaderInner>
-            <SearchBar />
-          </StyledHeaderInner>
-        </StyledSubHeader>
-      ) : null}
+      <StyledSubHeader className="xs:flex md:hidden">
+        <StyledHeaderInner>
+          <SearchBar />
+        </StyledHeaderInner>
+      </StyledSubHeader>
 
       <StyledWrapper>
         <StyledInner width={{ _: "100%", laptopL: "57%" }}>
