@@ -1,12 +1,12 @@
 "use client";
 
 import { EmptyTr, HeaderTr, Table, TBody, Th, ThInner } from "components";
-import { useMatchBreakpoints } from "hooks";
 import type { SortByPageQueryParams } from "lib/queries/sorting/types";
 import React, { useRef, useState } from "react";
 import { getEmptyListTr } from "utils";
 
 import useElementDimensions from "@/hooks/use-element-dimensions";
+import { useTailwindBreakpoints } from "@/hooks/use-tailwind-breakpoints";
 import type { OrderByStrings } from "@/sdk/indexer-v2/const";
 
 import type { PoolsData } from "../../ClientPoolsPage";
@@ -24,7 +24,7 @@ interface PoolsTableProps {
 }
 
 const PoolsTable: React.FC<PoolsTableProps> = (props: PoolsTableProps) => {
-  const { isMobile } = useMatchBreakpoints();
+  const { md } = useTailwindBreakpoints();
   const { offsetHeight: poolsTableBodyHeight } = useElementDimensions("poolsTableBody");
   const [selectedRow, setSelectedRow] = useState<number | undefined>(props.index);
   const [selectedSort, setSelectedSort] = useState<{
@@ -32,7 +32,7 @@ const PoolsTable: React.FC<PoolsTableProps> = (props: PoolsTableProps) => {
     direction: OrderByStrings;
   }>({ col: "all_time_vol", direction: "desc" });
 
-  const headers = isMobile ? MOBILE_HEADERS : HEADERS;
+  const headers = md ? HEADERS : MOBILE_HEADERS;
   const tableRef = useRef<HTMLTableSectionElement>(null);
   return (
     <StyledPoolsWrapper>

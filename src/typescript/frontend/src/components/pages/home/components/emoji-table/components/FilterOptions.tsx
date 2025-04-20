@@ -3,12 +3,11 @@ import type { Option } from "components/selects/types";
 import Text from "components/text";
 import { useUserSettings } from "context/event-store-context";
 import { translationFunction } from "context/language-context";
+import { cn } from "lib/utils/class-name";
 
 import { Switch } from "@/components/ui/Switch";
 import { FlexGap } from "@/containers";
 import { SortMarketsBy } from "@/sdk/indexer-v2/types/common";
-
-import { StyledTHFilters } from "../styled";
 
 const titleFromValue: Record<SortMarketsBy, string> = {
   [SortMarketsBy.MarketCap]: "Market Cap",
@@ -31,19 +30,20 @@ const options: Array<Option> = [
 type FilterOptionsComponentProps = {
   filter: SortMarketsBy;
   onChange: (value: SortMarketsBy) => void;
+  className?: string;
 };
 
-const FilterOptionsComponent = ({ filter, onChange }: FilterOptionsComponentProps) => {
+const FilterOptionsComponent = ({ filter, onChange, className }: FilterOptionsComponentProps) => {
   const selectedOption = options.find((x) => x.value === filter)!;
   const { t } = translationFunction();
   const animate = useUserSettings((s) => s.animate);
   const toggleAnimate = useUserSettings((s) => s.toggleAnimate);
 
   return (
-    <StyledTHFilters>
+    <div className={cn("flex items-center justify-between", className)}>
       <SingleSelect
         wrapperProps={{
-          className: "med-pixel-text xl:w-[300px] xs:w-unset xl:mr-inherit xs:mr-[20px]",
+          className: "med-pixel-text xl:w-[300px] w-unset xl:mr-inherit mr-[20px]",
         }}
         title={selectedOption?.title}
         value={selectedOption}
@@ -63,14 +63,14 @@ const FilterOptionsComponent = ({ filter, onChange }: FilterOptionsComponentProp
         placeholder="Sort:"
       />
 
-      <FlexGap gap="12px" className={"items-center med-pixel-text"}>
+      <FlexGap gap="12px" className={"med-pixel-text items-center"}>
         <Text className={"med-pixel-text"} color="lightGray" textTransform="uppercase">
           {t("Animate:")}
         </Text>
 
         <Switch checked={animate} onCheckedChange={toggleAnimate} />
       </FlexGap>
-    </StyledTHFilters>
+    </div>
   );
 };
 

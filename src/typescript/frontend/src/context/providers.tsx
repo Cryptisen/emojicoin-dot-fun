@@ -26,7 +26,7 @@ import Header from "@/components/header";
 import { HeaderSpacer } from "@/components/header-spacer";
 import Loader from "@/components/loader";
 import type { EmojiMartData } from "@/components/pages/emoji-picker/types";
-import useMatchBreakpoints from "@/hooks/use-match-breakpoints/use-match-breakpoints";
+import { useTailwindBreakpoints } from "@/hooks/use-tailwind-breakpoints";
 import { getAptosApiKey } from "@/sdk/const";
 
 import { ConnectToWebSockets } from "./ConnectToWebSockets";
@@ -53,8 +53,8 @@ const queryClient = new QueryClient();
 
 const Providers = ({ userAgent, children }: { userAgent: string } & React.PropsWithChildren) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { isDesktop } = useMatchBreakpoints();
-  const isMobileMenuOpen = isOpen && !isDesktop;
+  const { lg } = useTailwindBreakpoints();
+  const isMobileMenuOpen = isOpen && !lg;
   const [isMounted, setIsMounted] = useState(false);
 
   const wallets = useMemo(
